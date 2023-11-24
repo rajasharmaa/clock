@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analog Clock</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="clock-container">
+      <div class="clock-digital">
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="day"></div>
+      </div>
+      <div class="clock-analog">
+        <div class="spear"></div>
+        <div class="hour"></div>
+        <div class="minute"></div>
+        <div class="second"></div>
+        <div class="dail"></div>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      (function () {
+        const months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const days = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+
+        function updateclock() {
+          const date = new Date();
+          const hour = ((date.getHours() % 12) + date.getMinutes() / 60) * 30;
+          const minute = date.getMinutes() * 6;
+          const second = date.getSeconds() * 6;
+          const time = date.toLocaleString('en-US', { hour: 'numeric',minute:'numeric',hour12:true });
+          const day =days[date.getDay()];
+          const month = months[date.getMonth()];
+          const dateText=date.getDate()+'.'+month;
+
+          $('.date').text(dateText);
+          $('.time').text(time);
+          $('.day').text(day);
+          $('.hour').css('transform', 'rotate(' + hour + 'deg)');
+          $('.minute').css('transform', 'rotate(' + minute + 'deg)');
+          $('.second').css('transform', 'rotate(' + second + 'deg)');
+        }
+        function createDialMarks(selector,size,count,degreeStep){
+                  for(let s=0;s<count;s++){
+                    const degree = s*degreeStep;
+                    $(selector).append(`<span style="transform:rotate(${degree}deg) translatex(${size}px)">${s}</span>`);
+                  }
+        }
+        createDialMarks('.second',195,60,6);
+        createDialMarks('.minute',145,60,6);
+        createDialMarks('.hour',100,12,30);
+
+        setInterval(updateclock, 1000);
+        updateclock();
+        
+      })();
+    </script>
+  </body>
+</html>
